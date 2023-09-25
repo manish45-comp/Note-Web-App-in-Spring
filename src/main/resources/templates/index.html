@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Note App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=McLaren&family=Poppins:wght@200;300;400;500;700&display=swap');
+
+        *{
+            box-sizing:border-box;
+            padding:0;
+            margin:0;
+            font-family: 'Inter', sans-serif;
+            font-family: 'McLaren', cursive;
+            font-family: 'Poppins', sans-serif;
+        }
+        body{
+             background-image: linear-gradient( 45deg, #ede7deb7, transparent,#ede7deb0, transparent,#ede7de); 
+        }
+        .container-fluid{
+            width: 100%;
+            height:100vh;
+        }
+        .container{
+            height: inherit;
+            width: auto;
+            
+        }
+        .app-title{
+            color: #025a4e;
+            filter: drop-shadow(rgba(0, 0, 0, 0.16) 0px 1px 4px);
+        }
+        .btn{
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            border: none;
+            width: 200px;
+            height: 50px;
+            border-radius: 10px;
+            font-size: 1.4em;
+            justify-content: center;
+            border: none;
+        }
+        i{
+            color: #025a4e;
+        } 
+        .actionbuttons{
+            display: flex;
+            justify-content: end;
+        }
+        .btn-action{
+            border-radius:20px;
+            width: 70px;
+            background-color: #adfff411;
+            box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+            border: none !important;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 10px;
+            text-transform: uppercase;
+            color: #000 !important;
+            margin-left: 10px;
+        }
+        .btn-action:nth-child(1){
+            background-color: #9ab971;
+            
+        }
+        .btn-action:nth-child(2){
+            background-color: #ec9b9b;
+        }
+        .btn-action:nth-child(1):hover{
+            background-color: #83a55d;
+            text-decoration: none;
+        }
+        .btn-action:nth-child(2):hover{
+            background-color: #db6d6d;
+            text-decoration: none;
+        }
+        .main-container{
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+        }
+        .main-container{
+           padding: 20px;
+           margin-top: 30px;
+           display: grid;
+           grid-template-columns: 1fr 1fr;
+        }
+        .card{
+            margin: 5px;
+            border-radius: 10px;
+            background-color: #dcf0ff;
+            border: none;
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+        }
+        .card-header{
+            border: none;
+            text-align: end;
+        }
+        .card-body{
+            border: none;
+        }
+        .addbtn{
+            background-color: #bbdad5;
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            border:  1px dashed #025a4e;
+        }
+        .addbtn:hover {
+            background-color: #025a4e;
+           color:white !important;
+        }
+         
+        </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="container text-center p-5">
+        <div class="header">
+            <h1 class="text-black text-uppercase font-weight-bold">Welcome to <span class="app-title">Note App</span></h1>
+                <a class="addbtn btn text-black font-weight-bold" th:href="@{/notes/new}">ADD</a>
+
+            <div th:if="*{message}" class="alert alert-success m-4" role="alert" >
+                Note [[*{message}]]
+            </div>
+
+
+
+        </div>
+        <div class="main-container" >
+            <div class="card text-left" th:each="note :${Notes}">
+                <div class="card-header">
+                    <span th:text="${note.noteDate}"></span>
+                    <span>at</span>
+                    <span th:text="${note.noteTime}"></span>
+
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title"><span th:text="${note.noteTitle}"/></h5>
+                  <p class="card-text" ><span th:text="${note.noteDesc}" /> </p>
+                  <div class="actionbuttons">
+                  <a th:href="@{'/edit/' + ${note.noteId}}" class="btn-action">Edit</a>
+                  <a th:href="@{'/delete/' + ${note.noteId}}"  class="btn-action">Delete</a>
+                </div>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
